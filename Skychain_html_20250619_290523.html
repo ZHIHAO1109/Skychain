@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyChain 2025 - Drone Delivery Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(120deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .welcome {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .delivery-progress {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .delivery-progress i {
+            margin-right: 5px;
+        }
+        
+        .eta {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .drone-status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        .drone-status i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: #f1c40f;
+        }
+        
+        .delivery-types {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        
+        .delivery-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            width: 48%;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .delivery-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .delivery-card.standard {
+            border-top: 4px solid #3498db;
+        }
+        
+        .delivery-card.express {
+            border-top: 4px solid #e74c3c;
+        }
+        
+        .delivery-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .delivery-card.standard i {
+            color: #3498db;
+        }
+        
+        .delivery-card.express i {
+            color: #e74c3c;
+        }
+        
+        .delivery-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .announcement {
+            background: #fff9e6;
+            border-left: 4px solid #f1c40f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .announcement h3 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #d35400;
+        }
+        
+        .announcement h3 i {
+            margin-right: 8px;
+        }
+        
+        .stats {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            color: #2c3e50;
+        }
+        
+        .tab-content {
+            padding: 20px 15px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 5px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            color: #3498db;
+        }
+        
+        .nav-item i {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .drone-animation {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .delivery-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .delivery-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .delivery-item:last-child {
+            border-bottom: none;
+        }
+        
+        .delivery-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .express .delivery-icon {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+        
+        .standard .delivery-icon {
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+        }
+        
+        .delivery-info {
+            flex: 1;
+        }
+        
+        .delivery-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .delivery-info p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .delivery-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: 10px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .modify-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .create-order-form {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-express {
+            background: #e74c3c;
+        }
+        
+        .btn-express:hover {
+            background: #c0392b;
+        }
+        
+        .map-container {
+            position: relative;
+            height: 300px;
+            background: #e4edf5;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .drone-marker {
+            position: absolute;
+            top: 40%;
+            left: 35%;
+            z-index: 10;
+            animation: moveDrone 8s linear infinite;
+        }
+        
+        .drone-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            stroke-dasharray: 5;
+            stroke: #3498db;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        @keyframes moveDrone {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(150px, -50px); }
+            50% { transform: translate(300px, 0); }
+            75% { transform: translate(150px, 50px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #2ecc71;
+            border-radius: 4px;
+            width: 65%;
+            transition: width 0.5s ease;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .temperature-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .temp-box {
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            flex: 1;
+            margin: 0 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .temp-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .temp-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .order-success {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .order-success i {
+            font-size: 4rem;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        /* 账户信息卡片样式 */
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin-right: 20px;
+        }
+        
+        .user-info h2 {
+            margin-bottom: 5px;
+        }
+        
+        .user-info p {
+            color: #7f8c8d;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        /* 退款售后样式 */
+        .refund-item {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .refund-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .refund-status {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .status-pending {
+            background: #fef9e7;
+            color: #f39c12;
+        }
+        
+        .status-approved {
+            background: #eafaf1;
+            color: #27ae60;
+        }
+        
+        .refund-details {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* 支付方式样式 */
+        .payment-methods {
+            margin: 20px 0;
+        }
+        
+        .payment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: #f5f7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .payment-actions {
+            margin-left: 10px;
+        }
+        
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .edit-btn:hover {
+            background: #ecf0f1;
+        }
+        
+        /* 账户页面内边距 */
+        #account {
+            padding: 20px;
+        }
+        
+        .app-title {
+            text-align: center;
+            margin: 15px 0;
+            color: #3498db;
+            font-size: 1.8rem;
+        }
+        
+        /* 新增样式 */
+        .settings-group {
+            margin-bottom: 30px;
+        }
+        
+        .settings-group h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #2c3e50;
+        }
+        
+        .settings-group h3 i {
+            margin-right: 10px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-item i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: #3498db;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .setting-text {
+            flex: 1;
+        }
+        
+        .account-header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(120deg, #3498db, #2c3e50);
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .account-header h1 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .account-header p {
+            opacity: 0.9;
+        }
+        
+        /* 订单管理模态框 */
+        .order-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-header i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .modal-confirm {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .modal-cancel {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .modal-content {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .status-scheduled {
+            background: #fef9e7;
+            color: #f39c12;
+        }
+        
+        .status-in-progress {
+            background: #e1f0fa;
+            color: #3498db;
+        }
+        
+        .status-delivered {
+            background: #eafaf1;
+            color: #27ae60;
+        }
+        
+        /* 订单管理标题 */
+        .order-management-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .order-management-title h2 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        .order-management-title h2 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Title -->
+        <div class="app-title">
+            <i class="fas fa-drone-alt"></i> SkyChain 2025
+        </div>
+        
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="header">
+                <div class="drone-animation">
+                    <i class="fas fa-drone-alt fa-2x"></i>
+                </div>
+                <h1 class="welcome">Welcome back, Mr. Smith</h1>
+                
+                <div class="status-bar">
+                    <div class="delivery-progress">
+                        <i class="fas fa-truck-loading"></i> Delivery in Progress
+                    </div>
+                    <div class="eta">ETA: 11:36</div>
+                </div>
+                
+                <div class="drone-status">
+                    <i class="fas fa-satellite-dish"></i>
+                    <span>Drone is en route to you</span>
+                </div>
+            </div>
+            
+            <div class="tab-content">
+                <div class="delivery-types">
+                    <div class="delivery-card standard">
+                        <i class="fas fa-box"></i>
+                        <h3>Standard Delivery</h3>
+                        <p>Regular items</p>
+                    </div>
+                    <div class="delivery-card express">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Express Delivery</h3>
+                        <p>Urgent items</p>
+                    </div>
+                </div>
+                
+                <div class="announcement">
+                    <h3><i class="fas fa-bullhorn"></i> Service Announcement</h3>
+                    <p>Service will be paused this Friday due to heavy rain. Please schedule deliveries in advance.</p>
+                </div>
+                
+                <div class="stats">
+                    <i class="fas fa-tachometer-alt"></i> Our average delivery time is 18 minutes with 100% temperature control compliance
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="home-progress"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #7f8c8d;">
+                    <span>Warehouse</span>
+                    <span>In Transit</span>
+                    <span>Your Location</span>
+                </div>
+                
+                <div class="temperature-display">
+                    <div class="temp-box">
+                        <i class="fas fa-thermometer-half fa-2x" style="color: #3498db;"></i>
+                        <div class="temp-value">4°C</div>
+                        <div class="temp-label">Current Temp</div>
+                    </div>
+                    <div class="temp-box">
+                        <i class="fas fa-bolt fa-2x" style="color: #f1c40f;"></i>
+                        <div class="temp-value">78%</div>
+                        <div class="temp-label">Battery</div>
+                    </div>
+                    <div class="temp-box">
+                        <i class="fas fa-tachometer-alt fa-2x" style="color: #2ecc71;"></i>
+                        <div class="temp-value">42km/h</div>
+                        <div class="temp-label">Speed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- My Deliveries -->
+        <div id="my-deliveries" class="page">
+            <div class="header">
+                <h1 class="welcome">My Deliveries</h1>
+            </div>
+            
+            <div class="tab-content">
+                <div class="order-management-title">
+                    <h2><i class="fas fa-history"></i> Delivery History</h2>
+                    <div class="stats" style="background: rgba(52, 152, 219, 0.1); padding: 5px 10px; border-radius: 12px; font-size: 0.9rem;">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </div>
+                </div>
+                
+                <div class="delivery-list">
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - Prescription</h4>
+                            <p>2025-06-05 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item standard">
+                        <div class="delivery-icon">
+                            <i class="fas fa-medkit"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Standard Delivery - Emergency Response Kit</h4>
+                            <p>2025-06-03 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-first-aid"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - First Aid Kit</h4>
+                            <p>2025-05-28 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item standard">
+                        <div class="delivery-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Standard Delivery - Lab Samples</h4>
+                            <p>2025-05-25 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-management-title" style="margin-top: 30px;">
+                    <h2><i class="fas fa-calendar"></i> Scheduled Deliveries</h2>
+                    <div class="stats" style="background: rgba(231, 126, 35, 0.1); padding: 5px 10px; border-radius: 12px; font-size: 0.9rem; color: #e67e22;">
+                        <i class="fas fa-clock"></i> Active
+                    </div>
+                </div>
+                
+                <div class="delivery-list">
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - Vaccines</h4>
+                            <p>Today at 18:30 | Scheduled</p>
+                            <div class="order-status status-scheduled">Scheduled</div>
+                        </div>
+                        <div class="delivery-actions">
+                            <button class="action-btn modify-btn" data-id="order-5">
+                                <i class="fas fa-edit"></i> Modify
+                            </button>
+                            <button class="action-btn cancel-btn" data-id="order-5">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        <div>
+                            <i class="fas fa-clock" style="color: #f39c12;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-prescription-bottle"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - Prescription Refill</h4>
+                            <p>Tomorrow at 10:00 | Scheduled</p>
+                            <div class="order-status status-scheduled">Scheduled</div>
+                        </div>
+                        <div class="delivery-actions">
+                            <button class="action-btn modify-btn" data-id="order-6">
+                                <i class="fas fa-edit"></i> Modify
+                            </button>
+                            <button class="action-btn cancel-btn" data-id="order-6">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                        <div>
+                            <i class="fas fa-clock" style="color: #f39c12;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create Order -->
+        <div id="create-order" class="page">
+            <div class="header">
+                <h1 class="welcome">Create New Order</h1>
+            </div>
+            
+            <div class="tab-content">
+                <div class="create-order-form">
+                    <div class="form-group">
+                        <label for="delivery-type">Delivery Type</label>
+                        <select id="delivery-type">
+                            <option value="standard">Standard Delivery</option>
+                            <option value="express">Express Delivery</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pickup-address">Pickup Address</label>
+                        <input type="text" id="pickup-address" placeholder="Enter pickup address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="delivery-address">Delivery Address</label>
+                        <input type="text" id="delivery-address" placeholder="Enter delivery address" value="Mr. Smith, 123 Main St">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-description">Item Description</label>
+                        <textarea id="item-description" rows="3" placeholder="Describe your items"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="delivery-time">Preferred Delivery Time</label>
+                        <input type="datetime-local" id="delivery-time">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Special Requirements</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                            <div style="background: #ecf0f1; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer;">
+                                <i class="fas fa-snowflake"></i> Temperature Control
+                            </div>
+                            <div style="background: #ecf0f1; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer;">
+                                <i class="fas fa-lock"></i> Secure Delivery
+                            </div>
+                            <div style="background: #ecf0f1; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer;">
+                                <i class="fas fa-box-open"></i> Unpacking Service
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="submit-order">Submit Order</button>
+                    <button class="btn btn-express" style="margin-top: 10px;">Urgent Express Delivery</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Tracking -->
+        <div id="live-tracking" class="page">
+            <div class="header">
+                <h1 class="welcome">Live Tracking</h1>
+            </div>
+            
+            <div class="tab-content">
+                <div class="status-bar" style="margin-top: 20px; background: white; padding: 15px;">
+                    <div class="delivery-progress">
+                        <i class="fas fa-truck-loading"></i> Delivery in Progress
+                    </div>
+                    <div class="eta">ETA: 11:36</div>
+                </div>
+                
+                <div class="map-container">
+                    <svg class="drone-path" viewBox="0 0 400 300">
+                        <path d="M50 150 C 150 100, 250 100, 350 150 C 250 200, 150 200, 50 150" />
+                    </svg>
+                    <div class="drone-marker">
+                        <i class="fas fa-drone-alt fa-2x" style="color: #3498db;"></i>
+                    </div>
+                    <div class="map-overlay">
+                        <i class="fas fa-map-marked-alt fa-3x"></i>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <h3>Drone Live Position</h3>
+                            <p>Updating location data...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="drone-status" style="background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                    <i class="fas fa-satellite"></i>
+                    <span>Drone location: 2.3 km from you</span>
+                </div>
+                
+                <div class="stats" style="margin-top: 20px;">
+                    <i class="fas fa-thermometer-half"></i> Current cargo temperature: 4°C | Status: Normal
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="tracking-progress"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #7f8c8d;">
+                    <span>Warehouse</span>
+                    <span>In Transit</span>
+                    <span>Your Location</span>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" style="max-width: 200px;">
+                        <i class="fas fa-phone-alt"></i> Contact Pilot
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Express Delivery -->
+        <div id="express-delivery" class="page">
+            <div class="header">
+                <h1 class="welcome">Express Delivery</h1>
+            </div>
+            
+            <div class="tab-content">
+                <div class="announcement">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Urgent Express Delivery</h3>
+                    <p>This service is dedicated for medication, medical supplies, and urgent items. Average response time 12 minutes.</p>
+                </div>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0;">
+                    <div style="flex: 1; min-width: 120px; background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="background: rgba(231, 76, 60, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #e74c3c;">
+                            <i class="fas fa-prescription-bottle fa-2x"></i>
+                        </div>
+                        <h4>Prescriptions</h4>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 120px; background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="background: rgba(231, 76, 60, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #e74c3c;">
+                            <i class="fas fa-flask fa-2x"></i>
+                        </div>
+                        <h4>Lab Samples</h4>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 120px; background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="background: rgba(231, 76, 60, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #e74c3c;">
+                            <i class="fas fa-first-aid fa-2x"></i>
+                        </div>
+                        <h4>First Aid Supplies</h4>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 120px; background: white; border-radius: 15px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div style="background: rgba(231, 76, 60, 0.15); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #e74c3c;">
+                            <i class="fas fa-syringe fa-2x"></i>
+                        </div>
+                        <h4>Vaccines</h4>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 25px 0;">
+                    <button class="btn btn-express" style="max-width: 300px; margin: 0 auto;">
+                        <i class="fas fa-plus-circle"></i> Create Express Delivery Order
+                    </button>
+                </div>
+                
+                <div class="announcement">
+                    <h3><i class="fas fa-info-circle"></i> Important Information</h3>
+                    <p>• Express deliveries are prioritized over standard deliveries</p>
+                    <p>• Temperature-controlled containers are used for sensitive items</p>
+                    <p>• Real-time tracking available for all express deliveries</p>
+                    <p>• Emergency contact available 24/7</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Account Page -->
+        <div id="account" class="page">
+            <div class="account-header">
+                <h1><i class="fas fa-user-circle"></i> My Account</h1>
+                <p>Mr. Smith | Premium Member</p>
+            </div>
+            
+            <!-- 基本信息部分 -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h2>John Smith</h2>
+                        <p>john.smith@example.com</p>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">Deliveries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Avg. Minutes</div>
+                    </div>
+                </div>
+                
+                <button class="btn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+            
+            <!-- 历史订单 -->
+            <div class="settings-group">
+                <h3><i class="fas fa-history"></i> Order History</h3>
+                
+                <div class="delivery-list">
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - Prescription</h4>
+                            <p>2025-06-05 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item standard">
+                        <div class="delivery-icon">
+                            <i class="fas fa-medkit"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Standard Delivery - Emergency Response Kit</h4>
+                            <p>2025-06-03 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-item express">
+                        <div class="delivery-icon">
+                            <i class="fas fa-first-aid"></i>
+                        </div>
+                        <div class="delivery-info">
+                            <h4>Express Delivery - First Aid Kit</h4>
+                            <p>2025-05-28 | Delivered</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button style="background: none; border: none; color: #3498db; font-weight: 500;">
+                        <i class="fas fa-list"></i> View All Orders
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 退款售后 -->
+            <div class="settings-group">
+                <h3><i class="fas fa-undo-alt"></i> Refund & After-Sales</h3>
+                
+                <div class="refund-item">
+                    <div class="refund-header">
+                        <h4>Order #DR-20250605</h4>
+                        <div class="refund-status status-pending">
+                            <i class="fas fa-clock"></i> Pending
+                        </div>
+                    </div>
+                    <p>Prescription medication delivery delayed</p>
+                    <div class="refund-details">
+                        <span>Requested: Jun 5, 2025</span>
+                        <span>Amount: $24.99</span>
+                    </div>
+                </div>
+                
+                <div class="refund-item">
+                    <div class="refund-header">
+                        <h4>Order #DR-20250528</h4>
+                        <div class="refund-status status-approved">
+                            <i class="fas fa-check-circle"></i> Approved
+                        </div>
+                    </div>
+                    <p>Damaged package during delivery</p>
+                    <div class="refund-details">
+                        <span>Requested: May 29, 2025</span>
+                        <span>Amount: $15.50</span>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn" style="max-width: 200px;">
+                        <i class="fas fa-plus"></i> New Refund Request
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 支付方式 -->
+            <div class="settings-group">
+                <h3><i class="fas fa-credit-card"></i> Payment Methods</h3>
+                
+                <div class="payment-methods">
+                    <div class="payment-card">
+                        <div class="payment-icon">
+                            <i class="fab fa-cc-visa"></i>
+                        </div>
+                        <div class="payment-info">
+                            <h4>Visa ending in 1234</h4>
+                            <p>Expires 12/2027</p>
+                        </div>
+                        <div class="payment-actions">
+                            <button class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-card">
+                        <div class="payment-icon">
+                            <i class="fab fa-cc-mastercard"></i>
+                        </div>
+                        <div class="payment-info">
+                            <h4>Mastercard ending in 5678</h4>
+                            <p>Expires 08/2026</p>
+                        </div>
+                        <div class="payment-actions">
+                            <button class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-card">
+                        <div class="payment-icon">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                        <div class="payment-info">
+                            <h4>PayPal</h4>
+                            <p>john.smith@example.com</p>
+                        </div>
+                        <div class="payment-actions">
+                            <button class="edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn" style="margin-top: 10px;">
+                    <i class="fas fa-plus-circle"></i> Add Payment Method
+                </button>
+            </div>
+            
+            <!-- 账户设置 -->
+            <div class="settings-group">
+                <h3>Account Settings</h3>
+                <div class="setting-item">
+                    <i class="fas fa-user-shield"></i>
+                    <div class="setting-text">Account Security</div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="setting-item">
+                    <i class="fas fa-bell"></i>
+                    <div class="setting-text">Notifications</div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="setting-item">
+                    <i class="fas fa-language"></i>
+                    <div class="setting-text">Language</div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-bottom: 80px;">
+                <button style="background: none; border: none; color: #e74c3c; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Log Out
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="nav-tabs">
+            <div class="nav-item active" data-target="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-target="my-deliveries">
+                <i class="fas fa-calendar-alt"></i>
+                <span>My Deliveries</span>
+                <div class="notification-badge">3</div>
+            </div>
+            <div class="nav-item" data-target="create-order">
+                <i class="fas fa-plus-circle"></i>
+                <span>Create Order</span>
+            </div>
+            <div class="nav-item" data-target="live-tracking">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Live Tracking</span>
+            </div>
+            <div class="nav-item" data-target="account">
+                <i class="fas fa-user"></i>
+                <span>Account</span>
+            </div>
+        </div>
+        
+        <!-- Order Success Modal -->
+        <div class="overlay" id="overlay"></div>
+        <div class="order-success" id="order-success">
+            <i class="fas fa-check-circle"></i>
+            <h2>Order Created Successfully!</h2>
+            <p>Your delivery is scheduled and will arrive soon.</p>
+            <button class="btn" style="margin-top: 20px; max-width: 200px;" id="close-modal">Continue</button>
+        </div>
+        
+        <!-- Order Management Modals -->
+        <div class="order-modal" id="cancel-order-modal">
+            <div class="modal-header">
+                <i class="fas fa-times-circle" style="color: #e74c3c;"></i>
+                <h3 class="modal-title">Cancel Delivery</h3>
+            </div>
+            <div class="modal-content">
+                <p>Are you sure you want to cancel this delivery?</p>
+                <p><strong>Express Delivery - Vaccines</strong></p>
+                <p>Scheduled for Today at 18:30</p>
+                <div class="order-status status-scheduled">Scheduled</div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-confirm" id="confirm-cancel">Confirm Cancel</button>
+                <button class="modal-cancel" id="close-cancel-modal">Go Back</button>
+            </div>
+        </div>
+        
+        <div class="order-modal" id="modify-order-modal">
+            <div class="modal-header">
+                <i class="fas fa-edit" style="color: #3498db;"></i>
+                <h3 class="modal-title">Modify Delivery</h3>
+            </div>
+            <div class="modal-content">
+                <p>Select what you want to change:</p>
+                <div style="margin-top: 15px; text-align: left;">
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="change-time" checked>
+                        <label for="change-time">Delivery Time</label>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="change-address">
+                        <label for="change-address">Delivery Address</label>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <input type="checkbox" id="change-items">
+                        <label for="change-items">Items</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-confirm" id="confirm-modify" style="background: #3498db;">Continue</button>
+                <button class="modal-cancel" id="close-modify-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show corresponding page
+                const target = this.getAttribute('data-target');
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // Simulate delivery progress updates
+        function updateDeliveryProgress() {
+            const etaElements = document.querySelectorAll('.eta');
+            const minutes = Math.floor(Math.random() * 5) + 1;
+            const newTime = `11:${36 - minutes < 10 ? '0' : ''}${36 - minutes}`;
+            
+            etaElements.forEach(el => {
+                el.textContent = `ETA: ${newTime}`;
+            });
+            
+            const distanceElements = document.querySelectorAll('.drone-status span');
+            const distance = (2.3 - (minutes * 0.1)).toFixed(1);
+            
+            distanceElements.forEach(el => {
+                el.textContent = `Drone location: ${distance} km from you`;
+            });
+            
+            const progressBars = document.querySelectorAll('.progress');
+            const progressValue = 65 + (minutes * 5);
+            
+            progressBars.forEach(bar => {
+                bar.style.width = `${progressValue}%`;
+            });
+            
+            setTimeout(updateDeliveryProgress, 5000);
+        }
+        
+        // Order submission
+        document.getElementById('submit-order').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('order-success').style.display = 'block';
+        });
+        
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('order-success').style.display = 'none';
+            
+            // Switch to home page
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+                if(nav.getAttribute('data-target') === 'home') {
+                    nav.classList.add('active');
+                }
+            });
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('home').classList.add('active');
+        });
+        
+        // Order management functionality
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('cancel-order-modal').style.display = 'block';
+            });
+        });
+        
+        document.querySelectorAll('.modify-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('modify-order-modal').style.display = 'block';
+            });
+        });
+        
+        // Close modals
+        document.getElementById('close-cancel-modal').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('cancel-order-modal').style.display = 'none';
+        });
+        
+        document.getElementById('close-modify-modal').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modify-order-modal').style.display = 'none';
+        });
+        
+        // Confirm order cancellation
+        document.getElementById('confirm-cancel').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('cancel-order-modal').style.display = 'none';
+            
+            // Show success message
+            alert('Your delivery has been successfully canceled.');
+        });
+        
+        // Confirm order modification
+        document.getElementById('confirm-modify').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modify-order-modal').style.display = 'none';
+            
+            // Navigate to create order page
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+                if(nav.getAttribute('data-target') === 'create-order') {
+                    nav.classList.add('active');
+                }
+            });
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('create-order').classList.add('active');
+            
+            // Pre-fill form with existing data
+            document.getElementById('delivery-type').value = 'express';
+            document.getElementById('pickup-address').value = 'SkyChain Pharmacy';
+            document.getElementById('delivery-address').value = 'Mr. Smith, 123 Main St';
+            document.getElementById('item-description').value = 'Vaccines for COVID-19';
+            document.getElementById('delivery-time').value = '2025-06-18T18:30';
+        });
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDeliveryProgress();
+            
+            // Set current time as default in create order
+            const now = new Date();
+            now.setFullYear(2025); // Set year to 2025
+            
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            document.getElementById('delivery-time').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        });
+    </script>
+</body>
+</html>
